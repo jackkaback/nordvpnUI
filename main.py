@@ -15,24 +15,25 @@ def disconnect():
 
 def main():
 	base = Tk()
+	base.title("Nord VPN setup")
+	base.geometry("300x150")
 
-	regionList = ["Albania", "Greece", "Portugal", "Argentina", "Hong_Kong", "Romania",
-				"Australia", "Hungary", "Serbia", "Austria", "Iceland", "Singapore", "Belgium",
-				"India", "Slovakia", "Bosnia_And_Herzegovina", "Indonesia", "Slovenia", "Brazil",
-				"Ireland", "South_Africa", "Bulgaria", "Israel", "South_Korea", "Canada", "Italy", "Spain",
-				"Chile", "Japan", "Sweden", "Costa_Rica", "Latvia", "Switzerland", "Croatia", "Luxembourg",
-				"Taiwan", "Cyprus", "Malaysia", "Thailand", "Czech_Republic", "Mexico", "Turkey", "Denmark",
-				"Moldova", "Ukraine", "Estonia", "Netherlands", "United_Kingdom", "Finland", "New_Zealand",
-				"United_States", "France", "North_Macedonia", "Vietnam", "Georgia", "Norway", "Germany", "Poland"]
 
-	# alphabetizes
-	regionList = sorted(regionList)
+	# list of currently supported countries
+	region_list = ["Albania", "Argentina", "Australia", "Austria", "Belgium", "Bosnia_And_Herzegovina", "Brazil",
+				"Bulgaria", "Canada", "Chile", "Costa_Rica", "Croatia", "Cyprus", "Czech_Republic", "Denmark",
+				"Estonia", "Finland", "France", "Georgia", "Germany", "Greece", "Hong_Kong", "Hungary", "Iceland",
+				"India", "Indonesia", "Ireland", "Israel", "Italy", "Japan", "Latvia", "Luxembourg", "Malaysia",
+				"Mexico", "Moldova", "Netherlands", "New_Zealand", "North_Macedonia", "Norway", "Poland", "Portugal",
+				"Romania", "Serbia", "Singapore", "Slovakia", "Slovenia", "South_Africa", "South_Korea", "Spain",
+				"Sweden", "Switzerland", "Taiwan", "Thailand", "Turkey", "Ukraine", "United_Kingdom",
+				"United_States", "Vietnam"]
 
-	
 	region = StringVar(base)
-	region.set(regionList[0])  # default value
+	region.set(region_list[0])  # default value
 
-	w = OptionMenu(base, region, *regionList)
+	# sets up the drop down menu
+	w = OptionMenu(base, region, *region_list)
 	w.pack()
 
 	mainloop()
