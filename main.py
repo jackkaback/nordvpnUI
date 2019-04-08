@@ -9,10 +9,10 @@ def parseInput(data):
 
 	# Turns the data from a lot of giberish into the output
 	data = str(data.stdout)
-	data = data.replace("\\r", "--")
-	data = data.replace("\\n", "--")
-	data = data.replace("\\t", "--")
-	data = data.replace("\\", "--")
+	data = data.replace("\\r", "-")
+	data = data.replace("\\n", "-")
+	data = data.replace("\\t", "-")
+	data = data.replace("\\", "-")
 	data = data.split("-")
 
 	ret_val = []
@@ -45,6 +45,30 @@ def getCities(country):
 
 	return parseInput(city_list)
 
+
+# gui for choosing connect or disconnect
+# returns true for connect, false for disconnect
+def guiConDis():
+	base = Tk()
+	base.title("Nord VPN setup")
+	base.geometry("300x150")
+
+	choices = ["Connect", "Disconnect", "Exit"]
+
+	conDis = StringVar(base)
+	conDis.set(choices[0])
+
+	# sets up the drop down menu
+	w = OptionMenu(base, conDis, *choices)
+	w.pack()
+
+	mainloop()
+
+	if conDis.get() == "Exit":
+		exit(0)
+
+	return conDis.get() == "Connect"
+
 # GUI for geting country
 def guiCountry():
 
@@ -70,11 +94,12 @@ def guiCountry():
 
 	return [region.get(), pickCity.get()]
 
+
 # GUI for selecting city
 def guiCity(cities):
 
 	base = Tk()
-	base.title("City selector")
+	base.title("Nord VPN setup")
 	base.geometry("300x150")
 
 	region = StringVar(base)
@@ -100,23 +125,30 @@ def disconnect():
 
 
 def main():
-	tempArr = guiCountry()
 
-	# picking any makes the VPN decide the location
-	if tempArr[0] == "Any":
-		connect("")
+	while(True):
 
-	# pick the city GUI for specific city
-	elif tempArr[1] == 1:
-		cities = getCities(tempArr[0])
-		city = guiCity(cities)
-		connect(tempArr[0] + " " + city)
+		if guiConDis():
 
-	# connect to whatever server in the target country
-	else:
-		connect(tempArr[0])
+			tempArr = guiCountry()
+
+			# picking any makes the VPN decide the location
+			if tempArr[0] == "Any":
+				connect("")
+
+			# pick the city GUI for specific city
+			elif tempArr[1] == 1:
+				cities = getCities(tempArr[0])
+				city = guiCity(cities)
+				connect(tempArr[0] + " " + city)
+
+			# connect to whatever server in the target country
+			else:
+				connect(tempArr[0])
+
+		else:
+			disconnect()
 
 
 if __name__ == '__main__':
-	disconnect()
 	main()
