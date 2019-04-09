@@ -7,7 +7,7 @@ from tkinter import *
 # parses the data from the console
 def parseInput(data):
 
-	# Turns the data from a lot of giberish into the output
+	# Turns the data from a lot of gibberish into the output
 	data = str(data.stdout)
 	data = data.replace("\\r", "-")
 	data = data.replace("\\n", "-")
@@ -69,18 +69,19 @@ def guiConDis():
 
 	return conDis.get() == "Connect"
 
+
 # GUI for geting country
-def guiCountry():
+def guiCountry(region_list):
 
 	base = Tk()
 	base.title("Nord VPN setup")
 	base.geometry("300x150")
 
-	# list of currently supported countries
-	region_list = getCountries()
-
 	region = StringVar(base)
 	region.set(region_list[0])  # default value
+
+	text = Label(base, text="Country Select")
+	text.pack()
 
 	# sets up the drop down menu
 	w = OptionMenu(base, region, *region_list)
@@ -101,6 +102,9 @@ def guiCity(cities):
 	base = Tk()
 	base.title("Nord VPN setup")
 	base.geometry("300x150")
+
+	text = Label(base, text="City Select")
+	text.pack()
 
 	region = StringVar(base)
 	region.set(cities[0])  # default value
@@ -126,28 +130,47 @@ def disconnect():
 
 def main():
 
+	disconnect()
+
+	connected = False
+
+	# get list of countries at launch
+	country_list = getCountries()
+
+	# runs infinitely until user closes the program
 	while(True):
 
+		# if they want to connect
 		if guiConDis():
 
-			tempArr = guiCountry()
+			temp_arr = guiCountry(country_list)
+
+			# disconnects before reconnecting
+			if connected:
+				disconnect()
+
+			connected = True
 
 			# picking any makes the VPN decide the location
-			if tempArr[0] == "Any":
+			if temp_arr[0] == "Any":
 				connect("")
 
 			# pick the city GUI for specific city
-			elif tempArr[1] == 1:
-				cities = getCities(tempArr[0])
+			elif temp_arr[1] == 1:
+				cities = getCities(temp_arr[0])
 				city = guiCity(cities)
-				connect(tempArr[0] + " " + city)
+				connect(temp_arr[0] + " " + city)
 
 			# connect to whatever server in the target country
 			else:
-				connect(tempArr[0])
+				connect(temp_arr[0])
 
+		# if they want to disconnect
 		else:
-			disconnect()
+			if connected:
+				disconnect()
+
+			connected = False
 
 
 if __name__ == '__main__':
