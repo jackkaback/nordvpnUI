@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
+
+# For exicuting terminal commands
 import os
+
+# For reading output from the OS/Terminal
 import subprocess
+
+# For the user interfaces
 from tkinter import *
 
 
@@ -46,24 +52,27 @@ def getCities(country):
 	return parseInput(city_list)
 
 
-# gui for choosing connect or disconnect
-# returns true for connect, false for disconnect
-def guiConDis():
+# GUI for choosing connect or disconnect
+# returns true for connect, false for disconnect, exits for exit
+def GUIConDis():
 	base = Tk()
 	base.title("Nord VPN setup")
 	base.geometry("300x150")
 
 	choices = ["Connect", "Disconnect", "Exit"]
 
+	# setup for drop down menu choices
 	conDis = StringVar(base)
 	conDis.set(choices[0])
 
 	# sets up the drop down menu
-	w = OptionMenu(base, conDis, *choices)
-	w.pack()
+	drop_down = OptionMenu(base, conDis, *choices)
+	drop_down.pack()
 
+	# runs the GUI
 	mainloop()
 
+	# if user sleceted exit, end the program
 	if conDis.get() == "Exit":
 		exit(0)
 
@@ -71,7 +80,7 @@ def guiConDis():
 
 
 # GUI for geting country
-def guiCountry(region_list):
+def GUICountry(region_list):
 
 	base = Tk()
 	base.title("Nord VPN setup")
@@ -84,20 +93,21 @@ def guiCountry(region_list):
 	text.pack()
 
 	# sets up the drop down menu
-	w = OptionMenu(base, region, *region_list)
-	w.pack()
+	drop_down = OptionMenu(base, region, *region_list)
+	drop_down.pack()
 
 	# if the user wants to city select
 	pickCity = IntVar()
-	Checkbutton(base, text="city select", variable=pickCity).pack()
+	Checkbutton(base, text="Select a City?", variable=pickCity).pack()
 
+	# runs the GUI
 	mainloop()
 
 	return [region.get(), pickCity.get()]
 
 
 # GUI for selecting city
-def guiCity(cities):
+def GUICity(cities):
 
 	base = Tk()
 	base.title("Nord VPN setup")
@@ -110,9 +120,10 @@ def guiCity(cities):
 	region.set(cities[0])  # default value
 
 	# sets up the drop down menu
-	w = OptionMenu(base, region, *cities)
-	w.pack()
+	drop_down = OptionMenu(base, region, *cities)
+	drop_down.pack()
 
+	# runs the GUI
 	mainloop()
 
 	return region.get()
@@ -141,9 +152,9 @@ def main():
 	while(True):
 
 		# if they want to connect
-		if guiConDis():
+		if GUIConDis():
 
-			temp_arr = guiCountry(country_list)
+			temp_arr = GUICountry(country_list)
 
 			# disconnects before reconnecting
 			if connected:
@@ -157,9 +168,9 @@ def main():
 
 			# pick the city GUI for specific city
 			elif temp_arr[1] == 1:
-				cities = getCities(temp_arr[0])
-				city = guiCity(cities)
-				connect(temp_arr[0] + " " + city)
+				cities_list = getCities(temp_arr[0])
+				city_picked = GUICity(cities_list)
+				connect(temp_arr[0] + " " + city_picked)
 
 			# connect to whatever server in the target country
 			else:
