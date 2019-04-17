@@ -19,6 +19,8 @@ def parseInput(data):
 	data = data.replace("\\n", "-")
 	data = data.replace("\\t", "-")
 	data = data.replace("\\", "-")
+	data = data.replace(",", "-")
+	data = data.replace(" ", "-")
 	data = data.split("-")
 
 	ret_val = []
