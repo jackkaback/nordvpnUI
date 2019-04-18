@@ -15,12 +15,13 @@ def parseInput(data):
 
 	# Turns the data from a lot of gibberish into the output
 	data = str(data.stdout)
-	data = data.replace("\\r", "-")
-	data = data.replace("\\n", "-")
-	data = data.replace("\\t", "-")
-	data = data.replace("\\", "-")
-	data = data.replace(",", "-")
-	data = data.replace(" ", "-")
+
+	# List of things to be replaces
+	temp = ["\\r", "\\n", "\\t", "\\", ",", " "]
+
+	for i in range(len(temp)):
+		data = data.replace(temp[i], "-")
+
 	data = data.split("-")
 
 	ret_val = []
