@@ -136,10 +136,14 @@ def GUICity(cities):
 def connect(location):
 	temp = "nordvpn connect " + location
 	os.system(temp)
+	location = location.replace(" ", ", ")
+	location = location.replace("_", " ")
+	subprocess.Popen(['notify-send', "Connected to " + location])
 
 
 def disconnect():
 	os.system("nordvpn disconnect")
+	subprocess.Popen(['notify-send', "Disconnected from VPN"])
 
 
 def main():
