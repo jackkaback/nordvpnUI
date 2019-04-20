@@ -10,6 +10,10 @@ import subprocess
 from tkinter import *
 
 
+def client_exit(self):
+	exit()
+
+
 # parses the data from the console
 def parseInput(data):
 
@@ -60,7 +64,7 @@ def getCities(country):
 def GUIConDis():
 	base = Tk()
 	base.title("Nord VPN setup")
-	base.geometry("300x150")
+	base.geometry("300x200")
 
 	choices = ["Connect", "Disconnect", "Exit"]
 
@@ -71,6 +75,10 @@ def GUIConDis():
 	# sets up the drop down menu
 	drop_down = OptionMenu(base, conDis, *choices)
 	drop_down.pack()
+
+	# continue button
+	quitButton = Button(base, text="Select", command=lambda: base.destroy())
+	quitButton.pack()
 
 	# runs the GUI
 	mainloop()
@@ -87,7 +95,7 @@ def GUICountry(region_list):
 
 	base = Tk()
 	base.title("Nord VPN setup")
-	base.geometry("300x150")
+	base.geometry("300x200")
 
 	region = StringVar(base)
 	region.set(region_list[0])  # default value
@@ -103,6 +111,10 @@ def GUICountry(region_list):
 	pickCity = IntVar()
 	Checkbutton(base, text="Select a City?", variable=pickCity).pack()
 
+	# continue button
+	quitButton = Button(base, text="Select", command=lambda: base.destroy())
+	quitButton.pack()
+
 	# runs the GUI
 	mainloop()
 
@@ -114,7 +126,7 @@ def GUICity(cities):
 
 	base = Tk()
 	base.title("Nord VPN setup")
-	base.geometry("300x150")
+	base.geometry("300x200")
 
 	text = Label(base, text="City Select")
 	text.pack()
@@ -125,6 +137,10 @@ def GUICity(cities):
 	# sets up the drop down menu
 	drop_down = OptionMenu(base, region, *cities)
 	drop_down.pack()
+
+	# continue button
+	quitButton = Button(base, text="Select", command=lambda: base.destroy())
+	quitButton.pack()
 
 	# runs the GUI
 	mainloop()
