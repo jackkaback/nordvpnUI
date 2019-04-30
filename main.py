@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# For exicuting terminal commands
+# For executing terminal commands
 import os
 
 # For reading output from the OS/Terminal
@@ -20,21 +20,23 @@ def parseInput(data):
 	# Turns the data from a lot of gibberish into the output
 	data = str(data.stdout)
 
-	# List of things to be replaces
-	temp = ["\\r", "\\n", "\\t", "\\", ",", " "]
+	# List of things to be replaced
+	remove_vals = ["\\r", "\\n", "\\t", "\\", ",", " "]
 
-	for i in range(len(temp)):
-		data = data.replace(temp[i], "-")
+	for ii in range(len(remove_vals)):
+		data = data.replace(remove_vals[ii], "-")
 
+	# Splits the data into a useable array
 	data = data.split("-")
 
 	ret_val = []
 
 	# removes assorted trash data
-	for i in range(len(data)):
-		if len(data[i]) >= 3:
-			ret_val.append(data[i])
+	for jj in range(len(data)):
+		if len(data[jj]) >= 3:
+			ret_val.append(data[jj])
 
+	# sorts for easy reading
 	ret_val = sorted(ret_val)
 
 	return ret_val
@@ -69,25 +71,25 @@ def GUIConDis():
 	choices = ["Connect", "Disconnect", "Exit"]
 
 	# setup for drop down menu choices
-	conDis = StringVar(base)
-	conDis.set(choices[0])
+	con_dis = StringVar(base)
+	con_dis.set(choices[0])
 
 	# sets up the drop down menu
-	drop_down = OptionMenu(base, conDis, *choices)
+	drop_down = OptionMenu(base, con_dis, *choices)
 	drop_down.pack()
 
 	# continue button
-	quitButton = Button(base, text="Select", command=lambda: base.destroy())
-	quitButton.pack()
+	quit_button = Button(base, text="Select", command=lambda: base.destroy())
+	quit_button.pack()
 
 	# runs the GUI
 	mainloop()
 
-	# if user sleceted exit, end the program
-	if conDis.get() == "Exit":
+	# if user selected exit, end the program
+	if con_dis.get() == "Exit":
 		exit(0)
 
-	return conDis.get() == "Connect"
+	return con_dis.get() == "Connect"
 
 
 # GUI for geting country
@@ -112,8 +114,8 @@ def GUICountry(region_list):
 	Checkbutton(base, text="Select a City?", variable=pickCity).pack()
 
 	# continue button
-	quitButton = Button(base, text="Select", command=lambda: base.destroy())
-	quitButton.pack()
+	quit_button = Button(base, text="Select", command=lambda: base.destroy())
+	quit_button.pack()
 
 	# runs the GUI
 	mainloop()
@@ -139,8 +141,8 @@ def GUICity(cities):
 	drop_down.pack()
 
 	# continue button
-	quitButton = Button(base, text="Select", command=lambda: base.destroy())
-	quitButton.pack()
+	quit_button = Button(base, text="Select", command=lambda: base.destroy())
+	quit_button.pack()
 
 	# runs the GUI
 	mainloop()
@@ -150,8 +152,11 @@ def GUICity(cities):
 
 # connects to the location
 def connect(location):
-	temp = "nordvpn connect " + location
-	os.system(temp)
+	# connects to VPN
+	command = "nordvpn connect " + location
+	os.system(command)
+
+	# sends out a systm notification for the user to see where they connected
 	location = location.replace(" ", ", ")
 	location = location.replace("_", " ")
 	subprocess.Popen(['notify-send', "Connected to " + location])
@@ -177,6 +182,7 @@ def main():
 		# if they want to connect
 		if GUIConDis():
 
+			# [0] for country, [1] for connect to city
 			temp_arr = GUICountry(country_list)
 
 			# disconnects before reconnecting
@@ -207,5 +213,6 @@ def main():
 			connected = False
 
 
+# run if is run as main
 if __name__ == '__main__':
 	main()
